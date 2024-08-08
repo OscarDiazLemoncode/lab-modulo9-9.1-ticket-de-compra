@@ -1,3 +1,22 @@
+/* 
+Producto:         Precio ---- IVA -------- Cantidad
+- Legumbres  ----   2€    ---- 21% --------     2
+- Perfume  ----     20€    ---- 21% --------    3
+- Leche  ----       1€     ---- 0% --------     6
+- Lasaña  ----      5€     ---- 5% --------     1
+*/
+
+/* 
+TODO: calcular precio total del ticket de compra, contanto con que la
+función  calculaTicket() devolverá un ticket con la información:
+  => Por cada producto queremos saber:
+  - Nombre
+  - Cantidad
+  - Precio sin IVA
+  - Precio con IVA
+  - Tipo de IVA
+ */
+
 export type TipoIva =
   | 'general'
   | 'reducido'
@@ -52,4 +71,31 @@ export const productos: LineaTicket[] = [
   },
 ];
 
-console.log(productos);
+/*
+ 1. **Legumbres**:
+   - Precio: 2€
+   - Cantidad: 2
+   - IVA (21%): 0.42€
+   - Subtotal: 2x2 + 0.42 = 4.42€
+
+2. **Perfume**:
+   - Precio: 20€
+   - Cantidad: 3
+   - IVA (21%): 12.60€
+   - Subtotal: 20x3 + 12.60 = 72.60€
+
+3. **Leche**:
+   - Precio: 1€
+   - Cantidad: 6
+   - IVA (0%): Sin IVA
+   - Subtotal: 1x6 = 6€
+
+4. **Lasaña**:
+   - Precio: 5€
+   - Cantidad: 1
+   - IVA (5%): 0.25€
+   - Subtotal: 5x1 + 0.25 = 5.25€
+
+**Precio total del ticket**: 4.42+ 72.60 + 6 + 5.25 = 88.27 €
+Por lo tanto, el precio total del ticket es 88.27€. 
+*/
