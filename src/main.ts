@@ -1,5 +1,11 @@
 import './style.css';
-import { TipoIva, LineaTicket, productos, Producto } from './model';
+import {
+  TipoIva,
+  LineaTicket,
+  productos,
+  Producto,
+  ResultadoLineaTicket,
+} from './model';
 
 // Validar parámetros para la función calculaIvaDeProducto
 const validarPecioCantidadYTipoIva = (
@@ -23,68 +29,10 @@ const validarPecioCantidadYTipoIva = (
   );
 };
 
-export const calculaIvaDeProducto = (
-  tipoDeIva: TipoIva,
-  precioProducto: number,
-  cantidadProducto: number
-): number => {
-  if (
-    validarPecioCantidadYTipoIva(precioProducto, cantidadProducto, tipoDeIva)
-  ) {
-    let iva: number;
-    switch (tipoDeIva) {
-      case 'sinIva':
-        /* tipoDeIva * precioProducto) / 100) * cantidadProducto */
-        iva = Number(
-          (((0 * precioProducto) / 100) * cantidadProducto).toFixed(2)
-        );
-        console.log(iva);
-        return iva;
-        break;
-      case 'general':
-        iva = Number(
-          (((21 * precioProducto) / 100) * cantidadProducto).toFixed(2)
-        );
-        return iva;
-        break;
-      case 'reducido':
-        iva = Number(
-          (((10 * precioProducto) / 100) * cantidadProducto).toFixed(2)
-        );
-        return iva;
-        break;
-      case 'superreducidoA':
-        iva = Number(
-          (((5 * precioProducto) / 100) * cantidadProducto).toFixed(2)
-        );
-        return iva;
-        break;
-      case 'superreducidoB':
-        iva = Number(
-          (((4 * precioProducto) / 100) * cantidadProducto).toFixed(2)
-        );
-        return iva;
-        break;
-      case 'superreducidoC':
-        iva = Number(
-          (((0 * precioProducto) / 100) * cantidadProducto).toFixed(2)
-        );
-        return iva;
-        break;
-
-      default:
-        break;
-    }
-  }
-  throw new Error('No se ha definido una entrada');
-};
-console.warn(calculaIvaDeProducto('general', 35, 1));
-calculaIvaDeProducto('general', 35, 1);
-
 // Obtenemos nombre del producto
 const nombreProducto = (arrayProductos: LineaTicket[]) => {
   const nombre = arrayProductos.map((producto) => producto.producto.nombre);
-  console.warn(nombre);
+  console.warn('nombreProducto =>' + nombre);
   return nombre;
 };
 nombreProducto(productos);
@@ -92,21 +40,13 @@ nombreProducto(productos);
 // Obtenemos cantidad del producto
 const cantidadProducto = (arrayProductos: LineaTicket[]) => {
   const cantidad = arrayProductos.map((producto) => producto.cantidad);
-  console.warn(cantidad);
+  console.warn('cantidadProducto =>' + cantidad);
   return cantidad;
 };
 cantidadProducto(productos);
 
-// Obtenemos tipo de iva del producto
-const tipoDeIvaProducto = (arrayProductos: LineaTicket[]) => {
-  const tipoDeIva = arrayProductos.map((producto) => producto.producto.tipoIva);
-  console.warn(tipoDeIva);
-  return tipoDeIva;
-};
-tipoDeIvaProducto(productos);
-
 // Calcula precio producto sin IVA
-const calcularPrecioSinIva = (
+const precioProductoSinIva = (
   precioProducto: number,
   cantidadProducto: number
 ): number => {
@@ -117,35 +57,53 @@ const calcularPrecioSinIva = (
     cantidadProducto !== undefined
   ) {
     const precio = precioProducto * cantidadProducto;
-    console.warn(precio);
+    //console.warn('precioProductoSinIva =>' + precio);
     return precio;
   }
   throw new Error('No se ha validad el precioProducto o cantidadProducto');
 };
-calcularPrecioSinIva(2, 2);
+precioProductoSinIva(2, 2);
 
-/* const calculaTicket = (lineasTicket: LineaTicket[]) => {
-  for (let i = 0; i < lineasTicket.length; i++) {
-    const el = lineasTicket[i];
-    //const nombre: string = el.producto.nombre;
-    //const precio: number = el.producto.precio;
-    const tipoDeIva: TipoIva = el.producto.tipoIva;
-    const producto: Producto = el.producto;
-    const cantidad = el.cantidad;
-    const { nombre, precio } = el.producto;
-    const iva = calculaIvaDeProducto(precio, cantidad, tipoDeIva);
-    console.log(el);
-    console.log(
-      `nombre=>${nombre}, precio=>${precio}, IVA=>${tipoDeIva},producto=>${producto},cantidad=>${cantidad}`
-    );
-    console.log(iva);
-    const ticket = precio * cantidad + iva;
-    console.warn(ticket);
+// Obtenemos tipo de iva del producto
+const tipoDeIvaProducto = (arrayProductos: LineaTicket[]) => {
+  const tipoDeIva = arrayProductos.map((producto) => producto.producto.tipoIva);
+  console.warn('tipoDeIvaProducto=>' + tipoDeIva);
+  return tipoDeIva;
+};
+tipoDeIvaProducto(productos);
+
+// Obtener IVA de producto
+const calcularIva = (precio: number, tipoDeIva: TipoIva) => {
+  switch (tipoDeIva) {
+    case 'general':
+      return Number(((precio * 21) / 100).toFixed(2));
+      break;
+    case 'reducido':
+      return Number(((precio * 10) / 100).toFixed(2));
+      break;
+    case 'superreducidoA':
+      return Number(((precio * 5) / 100).toFixed(2));
+      break;
+    case 'superreducidoB':
+      return Number(((precio * 4) / 100).toFixed(2));
+      break;
+    case 'superreducidoC':
+      return Number(((precio * 0) / 100).toFixed(2));
+      break;
+    case 'sinIva':
+      return Number(((precio * 0) / 100).toFixed(2));
+      break;
+
+    default:
+      return Number(((precio * 21) / 100).toFixed(2));
+      break;
   }
 };
-calculaTicket(productos); */
+console.warn('calcularIva => ' + calcularIva(10, 'general'));
+calcularIva(10, 'general');
 
-/* export const calculaIvaDeProducto = (
+// Obtener precio producto con IVA
+export const precioProductoConIva = (
   tipoDeIva: TipoIva,
   precioProducto: number,
   cantidadProducto: number
@@ -153,14 +111,52 @@ calculaTicket(productos); */
   if (
     validarPecioCantidadYTipoIva(tipoDeIva, precioProducto, cantidadProducto)
   ) {
-    const iva = Number(
-      (((tipoDeIva * precioProducto) / 100) * cantidadProducto).toFixed(2)
-    );
-    console.log(iva);
-    console.warn(typeof iva);
-    return iva;
+    const iva = calcularIva(precioProducto, tipoDeIva);
+    switch (tipoDeIva) {
+      case 'general':
+        return Number((precioProducto + iva) * cantidadProducto);
+        break;
+      case 'reducido':
+        return Number((precioProducto + iva) * cantidadProducto);
+        break;
+      case 'superreducidoA':
+        return Number((precioProducto + iva) * cantidadProducto);
+        break;
+      case 'superreducidoB':
+        return Number((precioProducto + iva) * cantidadProducto);
+        break;
+      case 'superreducidoC':
+        return Number((precioProducto + iva) * cantidadProducto);
+        break;
+      case 'sinIva':
+        return Number((precioProducto + iva) * cantidadProducto);
+        break;
+
+      default:
+        throw new Error('No se ha ejecutado switch en precioProductoConIva');
+
+        break;
+    }
   }
   throw new Error('No se ha definido una entrada');
 };
-calculaIvaDeProducto('general', 35, 1);
- */
+console.warn(
+  'precioProductoConIva =>' + precioProductoConIva('reducido', 2, 2)
+);
+precioProductoConIva('reducido', 2, 2);
+
+const calculaTicket = (lineasTicket: LineaTicket[]): ResultadoLineaTicket[] => {
+  return lineasTicket.map(({ producto, cantidad }) => ({
+    nombre: producto.nombre,
+    cantidad: cantidad,
+    precioSinIva: precioProductoSinIva(producto.precio, cantidad),
+    tipoIva: producto.tipoIva,
+    precioConIva: precioProductoConIva(
+      producto.tipoIva,
+      producto.precio,
+      cantidad
+    ),
+  }));
+};
+console.table(calculaTicket(productos));
+console.log(productos);

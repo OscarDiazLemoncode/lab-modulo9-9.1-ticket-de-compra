@@ -36,6 +36,14 @@ export interface LineaTicket {
   cantidad: number;
 }
 
+export interface ResultadoLineaTicket {
+  nombre: string;
+  cantidad: number;
+  precioSinIva: number;
+  tipoIva: TipoIva;
+  precioConIva: number;
+}
+
 export const productos: LineaTicket[] = [
   {
     producto: {
@@ -76,7 +84,7 @@ export const productos: LineaTicket[] = [
    - Precio: 2€
    - Cantidad: 2
    - IVA (21%): 0.42€
-   - Subtotal: 2x2 + 0.42 = 4.42€
+   - Subtotal: 2 + 0.42 * 2 = 4.84€
 
 2. **Perfume**:
    - Precio: 20€
