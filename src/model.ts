@@ -39,9 +39,18 @@ export interface LineaTicket {
 export interface ResultadoLineaTicket {
   nombre: string;
   cantidad: number;
+  precioUdSinIva: number;
   precioSinIva: number;
   tipoIva: TipoIva;
+  IVA: number;
+  precioUdConIva: number;
   precioConIva: number;
+}
+
+export interface ResultadoTotalTicket {
+  totalSinIva: number;
+  totalConIva: number;
+  totalIva: number;
 }
 
 export const productos: LineaTicket[] = [
