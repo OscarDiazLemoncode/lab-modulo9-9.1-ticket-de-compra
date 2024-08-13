@@ -53,6 +53,11 @@ export interface ResultadoTotalTicket {
   totalIva: number;
 }
 
+export interface TotalPorTipoIva {
+  tipoIva: TipoIva;
+  cuantia: number;
+}
+
 export const productos: LineaTicket[] = [
   {
     producto: {
