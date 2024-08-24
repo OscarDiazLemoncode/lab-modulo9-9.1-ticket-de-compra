@@ -1,11 +1,13 @@
 import {
   TipoIva,
+  tiposDeIvas,
   LineaTicket,
   productos,
   /* Producto, */
   ResultadoLineaTicket,
   ResultadoTotalTicket,
-  /* TotalPorTipoIva, */
+  TotalPorTipoIva,
+  TicketFinal,
 } from './model';
 
 // Validar parámetros para la función calculaIvaDeProducto
@@ -185,12 +187,13 @@ const calculaTicket = (lineasTicket: LineaTicket[]): ResultadoLineaTicket[] => {
     nombre: producto.nombre,
     cantidad: cantidad,
     precioUdSinIva: producto.precio,
-    precioSinIva: precioProductoSinIva(producto.precio, cantidad),
+    totalSinIva: precioProductoSinIva(producto.precio, cantidad),
     tipoIva: producto.tipoIva,
     IVA: porcentajeIva(producto.tipoIva),
+    cuotaIVa: calcularIva(producto.precio, producto.tipoIva),
     precioUdConIva:
       calcularIva(producto.precio, producto.tipoIva) + producto.precio,
-    precioConIva: precioProductoConIva(
+    totalConIva: precioProductoConIva(
       producto.tipoIva,
       producto.precio,
       cantidad
@@ -199,24 +202,25 @@ const calculaTicket = (lineasTicket: LineaTicket[]): ResultadoLineaTicket[] => {
 };
 
 const ticket = calculaTicket(productos);
-//console.table(ticket);
+console.table(ticket);
 //console.log(ticket);
 
 // Tipo de IVA
 /* const tipoIvaProducto = (ticket: ResultadoLineaTicket[]) => {
   return ticket.map((producto) => producto.tipoIva);
-}; */
-//console.warn(`tipoIvaProducto=> ${tipoIvaProducto(ticket)}`);
+};
+const tipoDeIva = tipoIvaProducto(ticket);
+console.warn(`tipoIvaProducto=> ${tipoIvaProducto(ticket)}`); */
 
 // Total ticket sin IVA
 const totalTicketSinIVa = (ticket: ResultadoLineaTicket[]): number => {
-  return ticket.reduce((total, producto) => total + producto.precioSinIva, 0);
+  return ticket.reduce((total, producto) => total + producto.totalSinIva, 0);
 };
 //console.warn(`totalTicketSinIVa=> ${totalTicketSinIVa(ticket)}`);
 
 // Total ticket con IVA
 const totalTicketConIVa = (ticket: ResultadoLineaTicket[]): number => {
-  return ticket.reduce((total, producto) => total + producto.precioConIva, 0);
+  return ticket.reduce((total, producto) => total + producto.totalConIva, 0);
 };
 //console.warn(`totalTicketConIVa=> ${totalTicketConIVa(ticket)}`);
 
@@ -238,25 +242,45 @@ const resultadoTotalTicket = (
     totalIva: totalPorcentajeIva(ticket),
   };
 };
-//console.warn(resultadoTotalTicket(ticket));
+console.warn(resultadoTotalTicket(ticket));
 resultadoTotalTicket(ticket);
 
+/*  */
+/* const totalesPorIva = (ticket: ResultadoLineaTicket[]) => {
+  let totalesPorIva: TotalPorTipoIva[] = {};
+  ticket.forEach((producto) => {
+    const tipoIva = producto.tipoIva;
+    totalesPorIva[tipoIva] = (totalesPorIva[tipoIva] || 0) + producto.cuotaIVa;
+  });
+  return totalesPorIva;
+};
+console.log(totalesPorIva(ticket)); */
+
+/*  */
+
 // Total por tipo de IVA
-/* const totalPorTipoIva = (ticket: ResultadoLineaTicket[]): TotalPorTipoIva => {
-    return ticket.reduce((totalPorTipo, producto) => {
-      const { tipoIva, precioSinIva } = producto;
-      if (!totalPorTipo[tipoIva]) {
-        totalPorTipo[tipoIva] = 0;
-      }
-      totalPorTipo[tipoIva] += precioSinIva;
-      const cuantia = totalPorTipo[tipoIva];
-      //console.log(tipoIva, cuantia);
-      return totalPorTipo;
-    }, {});
-  };
-  
-  console.log(totalPorTipoIva(ticket));
-  totalPorTipoIva(ticket); */
+const totalPorTipoIva = (
+  tiposDeIvas: TipoIva[],
+  ticket: ResultadoLineaTicket[]
+): TotalPorTipoIva[] => {
+  const resultado = tiposDeIvas.reduce<TotalPorTipoIva[]>((acc, iva) => {
+    const productosFiltrados = ticket.filter(
+      (producto) => producto.tipoIva === iva
+    );
+    const totalSinIva = productosFiltrados.reduce(
+      (total, producto) => total + producto.totalSinIva,
+      0
+    );
+    if (totalSinIva > 0) {
+      acc.push({ tipoIva: iva, cuantia: totalSinIva });
+    }
+    return acc;
+  }, []);
+  return resultado;
+};
+
+console.table(totalPorTipoIva(tiposDeIvas, ticket));
+totalPorTipoIva(tiposDeIvas, ticket);
 /* 
   //TODO:
   en cuanto a los totales:
@@ -264,4 +288,14 @@ resultadoTotalTicket(ticket);
   - El IVA. XXX
   - Un desglose del total por tipo de IVA, es decir, la suma de los importes correspondientes a cada tipo de IVA.
   - El total del ticket, incluyendo el IVA. XXX
+
+  const arrayIvas : TipoIva[] =[
+  "general",
+  ...
+  ] 
+  const obtenertotalIvaProducto = (tiposIVa, lineasTicket)=>{
+  tiposDeIva.map((tipoDeIva)=>{
+  const prodPorIva = lineasTicket.filter(lineaTicket)=>{
+  lineaTicket.tipoIva === tipoDeIVa)
+
   */
