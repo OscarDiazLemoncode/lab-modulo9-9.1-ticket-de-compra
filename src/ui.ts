@@ -226,7 +226,7 @@ const totalTicketConIVa = (ticket: ResultadoLineaTicket[]): number => {
 
 // Total % IVA
 const totalPorcentajeIva = (ticket: ResultadoLineaTicket[]): number => {
-  return ticket.reduce((total, producto) => total + producto.IVA, 0);
+  return ticket.reduce((total, producto) => total + producto.cuotaIVa, 0);
 };
 //console.warn(`totalPorcentajeIva=> ${totalPorcentajeIva(ticket)}`);
 
@@ -239,11 +239,11 @@ const resultadoTotalTicket = (
     /* ...ticket, */
     totalSinIva: totalTicketSinIVa(ticket),
     totalConIva: totalTicketConIVa(ticket),
-    totalIva: totalPorcentajeIva(ticket),
+    totalCuotaIva: totalPorcentajeIva(ticket),
   };
 };
 console.warn(resultadoTotalTicket(ticket));
-resultadoTotalTicket(ticket);
+const totalDelTicket = resultadoTotalTicket(ticket);
 
 /*  */
 /* const totalesPorIva = (ticket: ResultadoLineaTicket[]) => {
@@ -280,7 +280,24 @@ const totalPorTipoIva = (
 };
 
 console.table(totalPorTipoIva(tiposDeIvas, ticket));
-totalPorTipoIva(tiposDeIvas, ticket);
+const totalDesglosePorIva = totalPorTipoIva(tiposDeIvas, ticket);
+
+// Ticket final
+const ticketFinal = (
+  ticket: ResultadoLineaTicket[],
+  totalTicket: ResultadoTotalTicket,
+  desgloseIva: TotalPorTipoIva[]
+): TicketFinal[] => {
+  return [
+    {
+      lineas: ticket,
+      total: totalTicket,
+      desgloseIva: desgloseIva,
+    },
+  ];
+};
+console.log(ticketFinal(ticket, totalDelTicket, totalDesglosePorIva));
+ticketFinal(ticket, totalDelTicket, totalDesglosePorIva);
 /* 
   //TODO:
   en cuanto a los totales:

@@ -60,7 +60,7 @@ export interface ResultadoLineaTicket {
 export interface ResultadoTotalTicket {
   totalSinIva: number;
   totalConIva: number;
-  totalIva: number;
+  totalCuotaIva: number;
 }
 
 export interface TotalPorTipoIva {
