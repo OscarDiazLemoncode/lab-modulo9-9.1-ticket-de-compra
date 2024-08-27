@@ -108,32 +108,3 @@ export const productos: LineaTicket[] = [
     cantidad: 1,
   },
 ];
-
-/*
- 1. **Legumbres**:
-   - Precio: 2€
-   - Cantidad: 2
-   - IVA (21%): 0.42€
-   - Subtotal: 2 + 0.42 * 2 = 4.84€
-
-2. **Perfume**:
-   - Precio: 20€
-   - Cantidad: 3
-   - IVA (21%): 12.60€
-   - Subtotal: 20x3 + 12.60 = 72.60€
-
-3. **Leche**:
-   - Precio: 1€
-   - Cantidad: 6
-   - IVA (0%): Sin IVA
-   - Subtotal: 1x6 = 6€
-
-4. **Lasaña**:
-   - Precio: 5€
-   - Cantidad: 1
-   - IVA (5%): 0.25€
-   - Subtotal: 5x1 + 0.25 = 5.25€
-
-**Precio total del ticket**: 4.42+ 72.60 + 6 + 5.25 = 88.27 €
-Por lo tanto, el precio total del ticket es 88.27€. 
-*/

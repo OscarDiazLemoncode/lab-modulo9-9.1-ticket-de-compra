@@ -1,4 +1,4 @@
-import { cantidadProducto, porcentajeIva, calcularIva } from './ui';
+import { cantidadProducto, porcentajeIva, calcularIva } from './motor';
 
 describe('cantidadProducto', () => {
   it('deberia devolver throw si las entradas son null', () => {

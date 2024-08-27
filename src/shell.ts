@@ -1,5 +1,7 @@
 import './style.css';
-import './ui';
+import { ticket, totalDelTicket, totalDesglosePorIva, ticketFinal } from './ui';
 
-// TODO: DOMContentLoaded
-// ... funciones
+document.addEventListener('DOMContentLoaded', () => {
+  console.log(ticketFinal(ticket, totalDelTicket, totalDesglosePorIva));
+  ticketFinal(ticket, totalDelTicket, totalDesglosePorIva);
+});
