@@ -1,22 +1,3 @@
-/* 
-Producto:         Precio ---- IVA -------- Cantidad
-- Legumbres  ----   2€    ---- 21% --------     2
-- Perfume  ----     20€    ---- 21% --------    3
-- Leche  ----       1€     ---- 0% --------     6
-- Lasaña  ----      5€     ---- 5% --------     1
-*/
-
-/* 
-TODO: calcular precio total del ticket de compra, contanto con que la
-función  calculaTicket() devolverá un ticket con la información:
-  => Por cada producto queremos saber:
-  - Nombre
-  - Cantidad
-  - Precio sin IVA
-  - Precio con IVA
-  - Tipo de IVA
- */
-
 export type TipoIva =
   | 'general'
   | 'reducido'

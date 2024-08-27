@@ -1,27 +1,33 @@
 import {
   TicketFinal,
-  productos,
-  tiposDeIvas,
   ResultadoLineaTicket,
   ResultadoTotalTicket,
   TotalPorTipoIva,
 } from './model';
-import { resultadoTotalTicket, totalPorTipoIva, calculaTicket } from './motor';
+import { totalDelTicket, totalDesglosePorIva } from './motor';
 
-// Ticket final
-export const ticket = calculaTicket(productos);
-export const totalDelTicket = resultadoTotalTicket(ticket);
-export const totalDesglosePorIva = totalPorTipoIva(tiposDeIvas, ticket);
 export const ticketFinal = (
   ticket: ResultadoLineaTicket[],
   totalTicket: ResultadoTotalTicket,
   desgloseIva: TotalPorTipoIva[]
 ): TicketFinal[] => {
-  return [
-    {
-      lineas: ticket,
-      total: totalTicket,
-      desgloseIva: desgloseIva,
-    },
-  ];
+  if (
+    ticket !== undefined &&
+    ticket !== null &&
+    totalDelTicket !== undefined &&
+    totalDelTicket !== null &&
+    totalDesglosePorIva !== undefined &&
+    totalDesglosePorIva !== null
+  ) {
+    return [
+      {
+        lineas: ticket,
+        total: totalTicket,
+        desgloseIva: desgloseIva,
+      },
+    ];
+  }
+  throw new Error(
+    'No se ha definido una entrada de ticket, totalTicket, desgloseIva'
+  );
 };

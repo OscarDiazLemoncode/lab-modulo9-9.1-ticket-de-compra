@@ -1,5 +1,6 @@
 import './style.css';
-import { ticket, totalDelTicket, totalDesglosePorIva, ticketFinal } from './ui';
+import { ticketFinal } from './ui';
+import { ticket, totalDelTicket, totalDesglosePorIva } from './motor';
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log(ticketFinal(ticket, totalDelTicket, totalDesglosePorIva));

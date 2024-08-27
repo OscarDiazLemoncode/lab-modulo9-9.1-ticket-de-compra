@@ -1,5 +1,6 @@
 import {
   TipoIva,
+  tiposDeIvas,
   LineaTicket,
   productos,
   ResultadoLineaTicket,
@@ -167,22 +168,25 @@ const precioProductoConIva = (
 export const calculaTicket = (
   lineasTicket: LineaTicket[]
 ): ResultadoLineaTicket[] => {
-  return lineasTicket.map(({ producto, cantidad }) => ({
-    nombre: producto.nombre,
-    cantidad: cantidad,
-    precioUdSinIva: producto.precio,
-    totalSinIva: precioProductoSinIva(producto.precio, cantidad),
-    tipoIva: producto.tipoIva,
-    IVA: porcentajeIva(producto.tipoIva),
-    cuotaIVa: calcularIva(producto.precio, producto.tipoIva),
-    precioUdConIva:
-      calcularIva(producto.precio, producto.tipoIva) + producto.precio,
-    totalConIva: precioProductoConIva(
-      producto.tipoIva,
-      producto.precio,
-      cantidad
-    ),
-  }));
+  if (lineasTicket !== undefined && lineasTicket !== null) {
+    return lineasTicket.map(({ producto, cantidad }) => ({
+      nombre: producto.nombre,
+      cantidad: cantidad,
+      precioUdSinIva: producto.precio,
+      totalSinIva: precioProductoSinIva(producto.precio, cantidad),
+      tipoIva: producto.tipoIva,
+      IVA: porcentajeIva(producto.tipoIva),
+      cuotaIVa: calcularIva(producto.precio, producto.tipoIva),
+      precioUdConIva:
+        calcularIva(producto.precio, producto.tipoIva) + producto.precio,
+      totalConIva: precioProductoConIva(
+        producto.tipoIva,
+        producto.precio,
+        cantidad
+      ),
+    }));
+  }
+  throw new Error('No se ha definido una entrada de lineasTicket');
 };
 
 // Total ticket sin IVA
@@ -232,3 +236,12 @@ export const totalPorTipoIva = (
   }, []);
   return resultado;
 };
+
+// Detalle de lineas de ticket
+export const ticket = calculaTicket(productos);
+
+// Detalle de totales
+export const totalDelTicket = resultadoTotalTicket(ticket);
+
+// Desglose por tipos de IVA del ticket
+export const totalDesglosePorIva = totalPorTipoIva(tiposDeIvas, ticket);
